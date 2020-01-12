@@ -3,20 +3,28 @@ package dtos;
 import entities.Ingredient;
 import entities.Recipe;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class RecipeDTO {
     private String name;
-    private List<Ingredient> ingredients;
+    private List<IngredientsDTO> ingredients;
     private int prepTime;
     private String description;
 
     public RecipeDTO(Recipe recipe) {
         this.name = recipe.getName();
-        this.ingredients = recipe.getIngredients();
+        this.ingredients = convertIngredientsToDTO(recipe);
+        //recipe.getIngredients().forEach(ingredient -> this.ingredients.add(new IngredientsDTO(ingredient)));
         this.prepTime = recipe.getPrepTime();
         this.description = recipe.getDescription();
+    }
+
+    private List<IngredientsDTO> convertIngredientsToDTO(Recipe recipe) {
+        List<IngredientsDTO> ingredientsDTOS = new ArrayList<>();
+        recipe.getIngredients().forEach(ingredient -> ingredientsDTOS.add(new IngredientsDTO(ingredient)));
+        return ingredientsDTOS;
     }
 
     public String getName() {
@@ -27,11 +35,11 @@ public class RecipeDTO {
         this.name = name;
     }
 
-    public List<Ingredient> getIngredients() {
+    public List<IngredientsDTO> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
+    public void setIngredients(List<IngredientsDTO> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -65,5 +73,15 @@ public class RecipeDTO {
     @Override
     public int hashCode() {
         return Objects.hash(name, ingredients, prepTime, description);
+    }
+
+    @Override
+    public String toString() {
+        return "RecipeDTO{" +
+                "name='" + name + '\'' +
+                ", ingredients=" + ingredients +
+                ", prepTime=" + prepTime +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

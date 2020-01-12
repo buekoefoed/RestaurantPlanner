@@ -2,7 +2,10 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.RecipeDTO;
 import facades.FacadeExample;
+import facades.MenuFacade;
+import facades.ScraperFacade;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
@@ -10,18 +13,16 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
-//Todo Remove or change relevant parts before ACTUAL use
-@Path("xxx")
-public class RenameMeResource {
+@Path("restaurant")
+public class MenuResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(
-            "pu",
-            "jdbc:mysql://localhost:3307/startcode",
-            "dev",
-            "ax2",
+            EMF_Creator.DbSelector.DEV,
             EMF_Creator.Strategy.CREATE);
-    private static final FacadeExample FACADE = FacadeExample.getFacadeExample(EMF);
+    private static final MenuFacade MENU_FACADE = MenuFacade.getMenuFacade(EMF);
+    private static final ScraperFacade SCRAPER_FACADE = ScraperFacade.getScraperFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
@@ -30,13 +31,11 @@ public class RenameMeResource {
         return "{\"msg\":\"Hello World\"}";
     }
 
-    @Path("count")
+    @Path("all")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getRenameMeCount() {
-        long count = FACADE.getRenameMeCount();
-        return "{\"count\":" + count + "}";  //Done manually so no need for a DTO
+    public String getAllRecipes() {
+        List<RecipeDTO> recipeDTOS = MENU_FACADE.getAllRecipes();
+        return GSON.toJson(recipeDTOS);
     }
-
-
 }

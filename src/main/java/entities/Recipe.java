@@ -20,7 +20,7 @@ public class Recipe implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "recipe_ingredient_join",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
@@ -28,7 +28,7 @@ public class Recipe implements Serializable {
     private List<Ingredient> ingredients = new ArrayList<>();
     private int prepTime;
     private String description;
-    @ManyToMany(mappedBy = "recipes")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "recipes")
     private List<WeekMenu> weekMenus = new ArrayList<>();
 
     public Recipe() {

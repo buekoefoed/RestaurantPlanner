@@ -74,6 +74,7 @@ public class DemoResource {
         return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
     }
 
+    /*
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("luke")
@@ -90,4 +91,5 @@ public class DemoResource {
             }
         }).start();
     }
+    */
 }

@@ -15,7 +15,7 @@ public class WeekMenu implements Serializable {
     @Column(name = "weekmenu_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "weekmenu_recipe_join",
             joinColumns = @JoinColumn(name = "weekmenu_id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_id")

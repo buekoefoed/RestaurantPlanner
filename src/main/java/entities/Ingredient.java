@@ -17,9 +17,9 @@ public class Ingredient implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     //List of all recipes the ingredient is used in
-    @ManyToMany(mappedBy = "ingredients")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "ingredients")
     private List<Recipe> recipes = new ArrayList<>();
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id")
     private Item item;
     private int amount;

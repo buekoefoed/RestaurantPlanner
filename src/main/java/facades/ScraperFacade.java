@@ -3,11 +3,27 @@ package facades;
 import webScrapers.GetApi;
 import webScrapers.GetApiCallable;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
 public class ScraperFacade {
+
+    private static ScraperFacade instance;
+    private static EntityManagerFactory emf;
+
+    private ScraperFacade() {
+    }
+
+    public static ScraperFacade getScraperFacade(EntityManagerFactory _emf) {
+        if (instance == null) {
+            emf = _emf;
+            instance = new ScraperFacade();
+        }
+        return instance;
+    }
+
     public List<String> runParralel() throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newCachedThreadPool();
         List<String> urls = new ArrayList<>();
