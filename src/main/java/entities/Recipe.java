@@ -8,7 +8,10 @@ import java.util.Objects;
 
 @Entity(name = "Recipe")
 @Table(name = "recipe")
-@NamedQuery(name = "Recipe.deleteAllRows", query = "DELETE from Recipe")
+@NamedQueries(value = {
+        @NamedQuery(name = "Recipe.getAllRows", query = "SELECT Recipe FROM Recipe Recipe"),
+        @NamedQuery(name = "Recipe.deleteAllRows", query = "DELETE from Recipe")
+})
 public class Recipe implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -24,25 +27,25 @@ public class Recipe implements Serializable {
     )
     private List<Ingredient> ingredients = new ArrayList<>();
     private int prepTime;
-    private String directions;
+    private String description;
     @ManyToMany(mappedBy = "recipes")
     private List<WeekMenu> weekMenus = new ArrayList<>();
 
     public Recipe() {
     }
 
-    public Recipe(String name, List<Ingredient> ingredients, int prepTime, String directions) {
+    public Recipe(String name, List<Ingredient> ingredients, int prepTime, String description) {
         this.name = name;
         this.ingredients = ingredients;
         this.prepTime = prepTime;
-        this.directions = directions;
+        this.description = description;
     }
 
-    public Recipe(String name, List<Ingredient> ingredients, int prepTime, String directions, List<WeekMenu> weekMenus) {
+    public Recipe(String name, List<Ingredient> ingredients, int prepTime, String description, List<WeekMenu> weekMenus) {
         this.name = name;
         this.ingredients = ingredients;
         this.prepTime = prepTime;
-        this.directions = directions;
+        this.description = description;
         this.weekMenus = weekMenus;
     }
 
@@ -70,12 +73,12 @@ public class Recipe implements Serializable {
         this.prepTime = prepTime;
     }
 
-    public String getDirections() {
-        return directions;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDirections(String directions) {
-        this.directions = directions;
+    public void setDescription(String directions) {
+        this.description = directions;
     }
 
     public List<WeekMenu> getWeekMenus() {
@@ -95,12 +98,12 @@ public class Recipe implements Serializable {
                 Objects.equals(id, recipe.id) &&
                 Objects.equals(name, recipe.name) &&
                 Objects.equals(ingredients, recipe.ingredients) &&
-                Objects.equals(directions, recipe.directions) &&
+                Objects.equals(description, recipe.description) &&
                 Objects.equals(weekMenus, recipe.weekMenus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, ingredients, prepTime, directions, weekMenus);
+        return Objects.hash(id, name, ingredients, prepTime, description, weekMenus);
     }
 }
