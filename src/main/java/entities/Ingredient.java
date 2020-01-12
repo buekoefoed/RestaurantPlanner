@@ -72,13 +72,12 @@ public class Ingredient implements Serializable {
         if (!(o instanceof Ingredient)) return false;
         Ingredient that = (Ingredient) o;
         return amount == that.amount &&
-                Objects.equals(id, that.id) &&
                 Objects.equals(recipes, that.recipes) &&
                 Objects.equals(item, that.item);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, recipes, item, amount);
+        return Objects.hash(recipes, item, amount);
     }
 }

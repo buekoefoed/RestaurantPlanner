@@ -85,10 +85,12 @@ class MenuResourceTest {
         Recipe recipe1 = new Recipe("Onion Soup", ingredients1, 1800, "Fry onion and garlic, add water and boil for 15min");
         Recipe recipe2 = new Recipe("Chicken with potatoes", ingredients2, 3600, "Cook chicken in oven and boil potatoes until done");
 
+        /*
         ingredient1.addRecipe(recipe1);
         ingredient2.addRecipe(recipe1);
         ingredient3.addRecipe(recipe2);
         ingredient4.addRecipe(recipe2);
+        */
 
         List<Recipe> recipes = new ArrayList<>();
         recipes.add(recipe1);
@@ -156,9 +158,23 @@ class MenuResourceTest {
                 .extract()
                 .body().jsonPath().getList("", RecipeDTO.class);
 
-        System.out.println(recipeDTO1.getIngredients().get(0).toString());
-        System.out.println(recipeDTOS.get(0).getIngredients().get(0).toString());
-
         assertThat(recipeDTOS, containsInAnyOrder(recipeDTO1, recipeDTO2));
     }
+
+    @Test
+    void getRecipesByName() {
+        List<RecipeDTO> recipeDTOS =
+                given()
+                .body("\"Onion Soup\"")
+                .contentType("application/json")
+                .post("restaurant/search").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .extract()
+                .body().jsonPath().getList("", RecipeDTO.class);
+
+        assertEquals(1, recipeDTOS.size());
+        assertThat(recipeDTOS, containsInAnyOrder(recipeDTO1));
+    }
+
 }

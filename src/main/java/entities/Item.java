@@ -65,12 +65,11 @@ public class Item implements Serializable {
         Item item = (Item) o;
         return Double.compare(item.pricePrKg, pricePrKg) == 0 &&
                 Double.compare(item.storage, storage) == 0 &&
-                Objects.equals(id, item.id) &&
                 Objects.equals(name, item.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, pricePrKg, storage);
+        return Objects.hash(name, pricePrKg, storage);
     }
 }

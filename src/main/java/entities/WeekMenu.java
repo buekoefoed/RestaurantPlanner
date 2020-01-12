@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "WeekMenu")
 @Table(name = "weekmenu")
@@ -65,5 +66,20 @@ public class WeekMenu implements Serializable {
 
     public void setYear(int year) {
         Year = year;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WeekMenu)) return false;
+        WeekMenu weekMenu = (WeekMenu) o;
+        return WeekNumber == weekMenu.WeekNumber &&
+                Year == weekMenu.Year &&
+                Objects.equals(recipes, weekMenu.recipes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(recipes, WeekNumber, Year);
     }
 }

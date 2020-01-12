@@ -91,7 +91,10 @@ class MenuFacadeTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Recipe.deleteAllRows");
+            em.createQuery("select weekMenu from WeekMenu weekMenu", WeekMenu.class).getResultList().forEach(em::remove);
+            em.createQuery("select recipe from Recipe recipe", Recipe.class).getResultList().forEach((em::remove));
+            em.createQuery("select ingredient from Ingredient ingredient", Ingredient.class).getResultList().forEach((em::remove));
+            em.createQuery("select item from Item item", Item.class).getResultList().forEach((em::remove));
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -103,14 +106,28 @@ class MenuFacadeTest {
     }
 
     @Test
-    void getAllRecipes() {
+    void getAllRecipesSize() {
         List<RecipeDTO> recipeDTOS = facade.getAllRecipes();
-        assertThat(recipeDTOS, containsInAnyOrder(recipeDTO1, recipeDTO2));
         assertEquals(2, recipeDTOS.size());
     }
 
     @Test
+    void getAllRecipesContent() {
+        List<RecipeDTO> recipeDTOS = facade.getAllRecipes();
+        assertThat(recipeDTOS, containsInAnyOrder(recipeDTO1, recipeDTO2));
+    }
+
+    @Test
     void getRecipesByName() {
+        List<RecipeDTO> recipeDTOS = facade.getRecipesByName("Onion Soup");
+        assertEquals(1, recipeDTOS.size());
+        assertThat(recipeDTOS, containsInAnyOrder(recipeDTO1));
+    }
+
+    @Test
+    void getRecipesByNameFalse() {
+        List<RecipeDTO> recipeDTOS = facade.getRecipesByName("Pizza");
+        assertEquals(0, recipeDTOS.size());
     }
 
     @Test

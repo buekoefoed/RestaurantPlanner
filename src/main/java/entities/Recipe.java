@@ -10,7 +10,8 @@ import java.util.Objects;
 @Table(name = "recipe")
 @NamedQueries(value = {
         @NamedQuery(name = "Recipe.getAllRows", query = "SELECT Recipe FROM Recipe Recipe"),
-        @NamedQuery(name = "Recipe.deleteAllRows", query = "DELETE from Recipe")
+        @NamedQuery(name = "Recipe.deleteAllRows", query = "DELETE from Recipe"),
+        @NamedQuery(name = "Recipe.getRowsWhereName", query = "SELECT r FROM Recipe r WHERE r.name = :name")
 })
 public class Recipe implements Serializable {
 
@@ -95,7 +96,6 @@ public class Recipe implements Serializable {
         if (!(o instanceof Recipe)) return false;
         Recipe recipe = (Recipe) o;
         return prepTime == recipe.prepTime &&
-                Objects.equals(id, recipe.id) &&
                 Objects.equals(name, recipe.name) &&
                 Objects.equals(ingredients, recipe.ingredients) &&
                 Objects.equals(description, recipe.description) &&
@@ -104,6 +104,6 @@ public class Recipe implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, ingredients, prepTime, description, weekMenus);
+        return Objects.hash(name, ingredients, prepTime, description, weekMenus);
     }
 }

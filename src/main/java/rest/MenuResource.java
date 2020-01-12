@@ -3,15 +3,12 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.RecipeDTO;
-import facades.FacadeExample;
 import facades.MenuFacade;
 import facades.ScraperFacade;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -37,5 +34,14 @@ public class MenuResource {
     public String getAllRecipes() {
         List<RecipeDTO> recipeDTOS = MENU_FACADE.getAllRecipes();
         return GSON.toJson(recipeDTOS);
+    }
+
+    @Path("search")
+    @POST
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public String recipeSearch(String s) {
+        String searchQuery = GSON.fromJson(s, String.class);
+        return GSON.toJson(MENU_FACADE.getRecipesByName(searchQuery));
     }
 }

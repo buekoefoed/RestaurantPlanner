@@ -9,7 +9,7 @@ public interface IMenuFacade {
 
     List<RecipeDTO> getAllRecipes();
 
-    List<RecipeDTO> getRecipesByName();
+    List<RecipeDTO> getRecipesByName(String name);
 
     RecipeDTO createRecipe(RecipeDTO recipeDTO);
 

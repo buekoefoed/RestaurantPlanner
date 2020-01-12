@@ -16,6 +16,10 @@ public class MenuFacade implements IMenuFacade {
     private MenuFacade() {
     }
 
+    private EntityManager getEntityManager() {
+        return emf.createEntityManager();
+    }
+
     public static MenuFacade getMenuFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
@@ -26,7 +30,7 @@ public class MenuFacade implements IMenuFacade {
 
     @Override
     public List<RecipeDTO> getAllRecipes() {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         try {
             List<RecipeDTO> recipeDTOS = new ArrayList<>();
             List<Recipe> recipes = em.createNamedQuery("Recipe.getAllRows", Recipe.class).getResultList();
@@ -38,8 +42,17 @@ public class MenuFacade implements IMenuFacade {
     }
 
     @Override
-    public List<RecipeDTO> getRecipesByName() {
-        return null;
+    public List<RecipeDTO> getRecipesByName(String name) {
+        EntityManager em = getEntityManager();
+        try {
+            List<RecipeDTO> recipeDTOS = new ArrayList<>();
+            List<Recipe> recipes = em.createNamedQuery("Recipe.getRowsWhereName", Recipe.class)
+                    .setParameter("name", name).getResultList();
+            recipes.forEach(recipe -> recipeDTOS.add(new RecipeDTO(recipe)));
+            return recipeDTOS;
+        } finally {
+            em.close();
+        }
     }
 
     @Override
