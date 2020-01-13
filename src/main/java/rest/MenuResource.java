@@ -7,6 +7,7 @@ import facades.MenuFacade;
 import facades.ScraperFacade;
 import utils.EMF_Creator;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -43,5 +44,32 @@ public class MenuResource {
     public String recipeSearch(String s) {
         String searchQuery = GSON.fromJson(s, String.class);
         return GSON.toJson(MENU_FACADE.getRecipesByName(searchQuery));
+    }
+
+    @Path("create")
+    @POST
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @RolesAllowed("admin")
+    public String createRecipe(String s) {
+        return null;
+    }
+    
+    @Path("recipe/{id}")
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @RolesAllowed("admin")
+    public String updateRecipe(@PathParam("id") int id, String s) {
+        return null;
+    }
+
+    @Path("recipe/{id}")
+    @DELETE
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @RolesAllowed("admin")
+    public String deleteRecipe(@PathParam("id") int id) {
+        return null;
     }
 }
